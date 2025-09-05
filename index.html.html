@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beleza & Essência - Loja de Cosméticos</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Google Fonts - Elegant Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- TailwindCSS for enhanced UI -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom CSS -->
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Playfair Display', serif;
+      background-color: #fefaff;
+      color: #4a4a4a;
+    }
+    .text-pink-custom { color: #d46a6a !important; }
+    .bg-pink-light { background-color: #fefaff !important; }
+    .btn-gold {
+      background: linear-gradient(45deg, #d4af37, #f0c75e);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      transition: background-color 0.3s;
+    }
+    .btn-gold:hover {
+      background: linear-gradient(45deg, #f0c75e, #d4af37);
+      color: #fff;
+    }
+    .navbar-gold .nav-link { color: #d4af37 !important; }
+    .navbar-gold .nav-link.active { color: #f0c75e !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+    .banner { background: url('https://placehold.co/1920x1080/pink/white?text=Coastal+skyline+at+dusk+with+glowing+skyscrapers+and+calm+water+reflection+in+a+modern+skyline+view') no-repeat center center; background-size: cover; height: 70vh; min-height: 400px; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.7); border-radius: 0 0 50px 50px; margin-top: 56px; }
+    .card-product { border-radius: 20px; overflow: hidden; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2); transition: transform 0.3s, box-shadow 0.3s; }
+    .card-product:hover { transform: translateY(-10px); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.3); }
+    .card-img-top { height: 250px; object-fit: cover; }
+    .price { font-weight: bold; color: #b76e79; font-size: 1.3rem; }
+    .table-gold th { background: linear-gradient(45deg, #d4af37, #f0c75e); color: #fff; border: none; }
+    .btn-remove { background: none; border: none; color: #d46a6a; font-size: 1.3rem; cursor: pointer; transition: color 0.2s; }
+    .btn-remove:hover { color: #b76e79; }
+    .btn-whatsapp { background: linear-gradient(45deg, #25d366, #32de84); color: #fff; border: none; font-weight: 600; }
+    .hero-title { font-size: 4rem; font-weight: 700; }
+    .hero-subtitle { font-size: 1.5rem; }
+    @media (max-width: 768px) {
+      .banner { height: 50vh; min-height: 300px; border-radius: 0 0 30px 30px; }
+      .hero-title { font-size: 2.5rem; }
+      .hero-subtitle { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body class="bg-pink-light">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top navbar-gold">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center fw-bold fs-4 text-pink-custom" href="#home">
+        <i class="bi bi-droplet-fill fs-1 me-3"></i> Beleza & Essência
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav fs-5">
+          <li class="nav-item"><a class="nav-link active" href="#home">Início</a></li>
+          <li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link" href="#carrinho">Carrinho (<span id="cart-count">0</span>)</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Home Section -->
+  <header id="home" class="banner">
+    <div class="container hero-overlay">
+      <h1 class="hero-title">Sua Beleza, Nossa Essência</h1>
+      <p class="hero-subtitle mb-4">Descubra cosméticos premium para realçar sua beleza natural com fragrâncias elegantes e cuidados personalizados.</p>
+      <a href="#catalogo" class="btn btn-gold btn-lg px-5 py-3">Ver Catálogo</a>
+    </div>
+  </header>
+
+  <!-- Destaques Section -->
+  <section class="container my-5 py-5">
+    <h2 class="text-center mb-4 text-pink-custom fs-2 fw-bold">Produtos em Destaque</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="destaques-container">
+      <!-- Destaques serão carregados via JS -->
+    </div>
+  </section>
+
+  <!-- Catálogo Section -->
+  <section class="container my-5 py-5 bg-white rounded-3 shadow-sm" id="catalogo">
+    <h2 class="text-center mb-4 text-pink-custom fs-2 fw-bold">Catálogo de Produtos</h2>
+    <!-- Search Bar -->
+    <div class="row mb-4">
+      <div class="col-md-6 mx-auto">
+        <input type="text" id="searchInput" class="form-control border-gold rounded-pill" placeholder="Pesquisar produtos..." />
+      </div>
+    </div>
+    <!-- Category Tabs -->
+    <ul class="nav nav-pills justify-content-center mb-4" id="categoriaTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active border-gold text-gold" id="perfumes-tab" data-bs-toggle="pill" data-bs-target="#perfumes" type="button" role="tab" aria-controls="perfumes" aria-selected="true">Perfumes</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link border-gold text-gold" id="maquiagem-tab" data-bs-toggle="pill" data-bs-target="#maquiagem" type="button" role="tab" aria-controls="maquiagem" aria-selected="false">Maquiagem</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link border-gold text-gold" id="cabelos-tab" data-bs-toggle="pill" data-bs-target="#cabelos" type="button" role="tab" aria-controls="cabelos" aria-selected="false">Cuidados com Cabelo</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link border-gold text-gold" id="skincare-tab" data-bs-toggle="pill" data-bs-target="#skincare" type="button" role="tab" aria-controls="skincare" aria-selected="false">Skin Care</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="categoriaTabsContent">
+      <!-- Perfumes -->
+      <div class="tab-pane fade show active" id="perfumes" role="tabpanel" aria-labelledby="perfumes-tab">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="produtos-perfumes"></div>
+      </div>
+      <!-- Maquiagem -->
+      <div class="tab-pane fade" id="maquiagem" role="tabpanel" aria-labelledby="maquiagem-tab">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="produtos-maquiagem"></div>
+      </div>
+      <!-- Cuidados com Cabelo -->
+      <div class="tab-pane fade" id="cabelos" role="tabpanel" aria-labelledby="cabelos-tab">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="produtos-cabelos"></div>
+      </div>
+      <!-- Skin Care -->
+      <div class="tab-pane fade" id="skincare" role="tabpanel" aria-labelledby="skincare-tab">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="produtos-skincare"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Carrinho Section -->
+  <section class="container my-5 py-5 bg-white rounded-3 shadow-sm" id="carrinho">
+    <h2 class="text-center mb-4 text-pink-custom fs-2 fw-bold">Carrinho de Compras</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle" id="tabela-carrinho">
+        <thead class="table-gold text-center">
+          <tr>
+            <th>Produto</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th>Subtotal</th>
+            <th>Remover</th>
+          </tr>
+        </thead>
+        <tbody id="cart-items">
+          <!-- Itens do carrinho aqui -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="3" class="text-end fs-4">Total:</th>
+            <th id="total-carrinho" class="fs-4 fw-bold text-pink-custom">R$ 0,00</th>
+            <th></th>
+          </tr>
+        </tfoot>
+      </table>
+      <div class="text-center mt-4">
+        <button id="finalizarCompra" class="btn btn-gold btn-lg px-5" disabled>Finalizar Compra</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contato Section -->
+  <section class="container my-5 py-5 bg-pink-light rounded-3 shadow-sm" id="contato">
+    <h2 class="text-center mb-4 text-pink-custom fs-2 fw-bold">Entre em Contato</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form id="formContato">
+          <div class="mb-3">
+            <label for="nome" class="form-label fw-semibold">Nome</label>
+            <input type="text" class="form-control rounded-pill border-gold" id="nome" placeholder="Seu nome completo" required />
+          </div>
+          <div class="mb-3">
+            <label for="whatsapp" class="form-label fw-semibold">WhatsApp</label>
+            <input type="tel" class="form-control rounded-pill border-gold" id="whatsapp" placeholder="(XX) XXXXX-XXXX" required />
+          </div>
+          <div class="mb-3">
+            <label for="mensagem" class="form-label fw-semibold">Mensagem</label>
+            <textarea class="form-control border-gold rounded-3" id="mensagem" rows="4" placeholder="Escreva sua mensagem aqui..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-gold w-100 py-3 rounded-pill">Enviar Mensagem</button>
+        </form>
+        <div class="text-center mt-4">
+          <p class="mb-2">Ou fale diretamente conosco:</p>
+          <a href="https://wa.me/5511999999999" target="_blank" class="btn btn-whatsapp px-4 py-2 rounded-pill">
+            <i class="bi bi-whatsapp fs-5 me-2"></i> WhatsApp Business
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white text-center py-4 shadow-sm">
+    <div class="container">
+      <p class="mb-0 text-muted">&copy; 2024 Beleza & Essência. Todos os direitos reservados. Designed with elegance.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script>
+    // Produtos Data
+    const produtos = [
+      { id: 1, categoria: 'perfumes', nome: 'Perfume Rosa Encantada', descricao: 'Fragrância floral suave para o dia a dia, com notas de rosa delicada e essências naturais.', preco: 129.90, imagem: 'https://placehold.co/400x400/pink/white?text=Bottle+of+pink+perfume+with+roses+and+elegant+glass+design+in+a+minimalist+studio+setting', destaque: true },
+      { id: 2, categoria: 'perfumes', nome: 'Essência Dourada', descricao: 'Notas amadeiradas e sofisticadas para a noite, com toque dourado e fragrância refinada.', preco: 189.90, imagem: 'https://placehold.co/400x400/gold/white?text=Luxury+perfume+bottle+in+gold+with+wooden+accents+and+a+soft+focus+background', destaque: false },
+      { id: 3, categoria: 'maquiagem', nome: 'Batom Vermelho Clássico', descricao: 'Cor intensa e acabamento matte, perfeito para looks ousados e elegantes.', preco: 49.90, imagem: 'https://placehold.co/400x400/red/white?text=Classic+red+lipstick+tube+with+a+romantic+rose+painting+in+the+background', destaque: true },
+      { id: 4, categoria: 'maquiagem', nome: 'Paleta de Sombras Nude', descricao: 'Cores neutras para looks versáteis, com tons nude naturais e acabamento suave.', preco: 89.90, imagem: 'https://placehold.co/400x400/beige/white?text=Nude+eye+shadow+palette+with+elegant+brushes+and+a+floral+pattern+on+the+case', destaque: false },
+      { id: 5, categoria: 'cabelos', nome: 'Shampoo Nutritivo', descricao: 'Hidratação profunda para cabelos secos, com extratos vegetais e aroma relaxante.', preco: 59.90, imagem: 'https://placehold.co/400x400/blue/white?text=Nutritive+shampoo+bottle+with+a+fresh+green+leaf+and+water+drops+graphics', destaque: true },
+      { id: 6, categoria: 'cabelos', nome: 'Máscara Reparadora', descricao: 'Recupera fios danificados e fortalece, com proteínas restauradoras e embalagem sofisticada.', preco: 79.90, imagem: 'https://placehold.co/400x400/green/white?text=Hair+repair+mask+jar+with+a+lush+tropic+leaf+pattern+and+a+sleek+label', destaque: false },
+      { id: 7, categoria: 'skincare', nome: 'Creme Hidratante Facial', descricao: 'Hidratação leve e toque aveludado, com vitamina E e fórmula não oleosa.', preco: 69.90, imagem: 'https://placehold.co/400x400/cream/white?text=Facial+moisturizing+cream+jar+with+a+dewy+skincare+theme+and+elegant+packaging', destaque: true },
+      { id: 8, categoria: 'skincare', nome: 'Sérum Antioxidante', descricao: 'Protege a pele dos radicais livres, com vitamina C e aplicação diária recomendada.', preco: 99.90, imagem: 'https://placehold.co/400x400/yellow/white?text=Antioxidant+serum+bottle+with+a+bright+citrus+and+vibrant+color+design', destaque: false }
+    ];
+
+    // Cart Data
+    let cart = [];
+
+    // Load Destaques
+    const destaquesContainer = document.getElementById('destaques-container');
+    produtos.filter(p => p.destaque).forEach(produto => {
+      destaquesContainer.innerHTML += `
+        <div class="col">
+          <div class="card card-product">
+            <img src="${produto.imagem}" class="card-img-top" alt="${produto.descricao}">
+            <div class="card-body text-center">
+              <h5 class="card-title">${produto.nome}</h5>
+              <p class="card-text">${produto.descricao}</p>
+              <p class="price">R$ ${produto.preco.toFixed(2)}</p>
+              <button class="btn btn-gold btn-sm" onclick="addToCart(${produto.id})">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    // Load Products by Category
+    function loadProducts(category, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      produtos.filter(p => p.categoria === category).forEach(produto => {
+        container.innerHTML += `
+          <div class="col product-item">
+            <div class="card card-product h-100">
+              <img src="${produto.imagem}" class="card-img-top" alt="${produto.descricao}">
+              <div class="card-body d-flex flex-column text-center">
+                <h5 class="card-title">${produto.nome}</h5>
+                <p class="card-text">${produto.descricao}</p>
+                <p class="price mt-auto">R$ ${produto.preco.toFixed(2)}</p>
+                <button class="btn btn-gold btn-sm mt-2" onclick="addToCart(${produto.id})">Adicionar ao Carrinho</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // Load All Categories
+    loadProducts('perfumes', 'produtos-perfumes');
+    loadProducts('maquiagem', 'produtos-maquiagem');
+    loadProducts('cabelos', 'produtos-cabelos');
+    loadProducts('skincare', 'produtos-skincare');
+
+    // Add to Cart
+    function addToCart(id) {
+      const produto = produtos.find(p => p.id === id);
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({ ...produto, quantity: 1 });
+      }
+      updateCart();
+    }
+
+    // Remove from Cart
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      updateCart();
+    }
+
+    // Update Cart UI
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      const totalEl = document.getElementById('total-carrinho');
+      const cartCount = document.getElementById('cart-count');
+      cartItems.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        const subtotal = item.preco * item.quantity;
+        total += subtotal;
+        cartItems.innerHTML += `
+          <tr>
+            <td class="text-center">${item.nome}</td>
+            <td class="text-center">R$ ${item.preco.toFixed(2)}</td>
+            <td class="text-center">${item.quantity}</td>
+            <td class="text-center">R$ ${subtotal.toFixed(2)}</td>
+            <td class="text-center"><button class="btn-remove" onclick="removeFromCart(${item.id})">&times;</button></td>
+          </tr>
+        `;
+      });
+      totalEl.textContent = `R$ ${total.toFixed(2)}`;
+      cartCount.textContent = cart.length;
+      document.getElementById('finalizarCompra').disabled = cart.length === 0;
+    }
+
+    // Search Functionality
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      document.querySelectorAll('.product-item').forEach(item => {
+        const title = item.querySelector('.card-title').textContent.toLowerCase();
+        item.style.display = title.includes(query) ? 'block' : 'none';
+      });
+    });
+
+    // Finalize Purchase
+    document.getElementById('finalizarCompra').addEventListener('click', function() {
+      alert('Compra finalizada com sucesso! (Simulação - sem pagamento real)');
+      cart = [];
+      updateCart();
+    });
+
+    // Contact Form
+    document.getElementById('formContato').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const whatsapp = document.getElementById('whatsapp').value;
+      const mensagem = document.getElementById('mensagem').value;
+      alert(`Mensagem enviada!\nNome: ${nome}\nWhatsApp: ${whatsapp}\nMensagem: ${mensagem}`);
+      this.reset();
+    });
+  </script>
+</body>
+</html>
+</content>
+</create_file>  
+
+<attempt_completion>
+Aqui está o arquivo `index.html` pronto e completo com o site "Beleza & Essência". Esse é o arquivo que você deve usar para o Netlify.
+
+## Para colocar no Netlify:
+
+1. Baixe o arquivo `index.html` (clique com o botão direito no arquivo criado por mim e escolha "Salvar como").
+2. Acesse o painel do Netlify.
+3. Vá em **Sites** > **Add new site**.
+4. Escolha **Deploy manually**.
+5. Arraste o arquivo `index.html` para a área de upload.
+6. Clique em **Deploy site**.
+7. Acesse a URL gerada pelo Netlify (como `https://seudominio.netlify.app/`).
+
+---
+
+Se quiser editar algo (ex: trocar imagens, textos, nomes das abas), basta abrir o arquivo no editor, fazer as alterações e fazer um novo upload no Netlify.
+
+---
+
+Quer ajuda para editar alguma parte específica? Por exemplo, trocar as imagens para as suas próprias? É só dizer!  
+*(Nota: As imagens aqui usam placeholders; para imagens reais, hospede-as online e atualize os `src`.)*</attempt_completion>
